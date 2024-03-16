@@ -23,27 +23,34 @@ public:
     virtual void print() const = 0;
     virtual void reverse() = 0;
     //virtual void traverse(std::function <void (T &)> op) = 0;
-    virtual ArrList<T>* _to_Array() = 0;
-    virtual SLinkedList<T>* _to_SLinkedList() = 0;
+    // virtual ArrList<T>* _to_Array() = 0;
+    // virtual SLinkedList<T>* _to_SLinkedList() = 0;
 };
 
-// class Dataset {
-// private:
-//     List<List<int>*>* data;
-//     //You may need to define more
-// public:
-//     Dataset();
-//     ~Dataset();
-//     Dataset(const Dataset& other);
-//     Dataset& operator=(const Dataset& other);
-//     bool loadFromCSV(const char* fileName);
-//     void printHead(int nRows = 5, int nCols = 5) const;
-//     void printTail(int nRows = 5, int nCols = 5) const;
-//     void getShape(int& nRows, int& nCols) const;
-//     void columns() const;
-//     bool drop(int axis = 0, int index = 0, std::string columns = "");
-//     Dataset extract(int startRow = 0, int endRow = -1, int startCol = 0, int endCol = -1) const;
-// };
+class Dataset {
+private:
+    List<List<int>*>* data;
+    List<string>* label;
+    //You may need to define more
+public:
+    Dataset(): data(new SLinkedList<SLinkedList<int>*>), label(new SLinkedList<string>) {};
+    ~Dataset() {
+        for (int i = 0; i < data->length(); i++){
+            data->get(i)->clear();
+        }
+        data->clear();
+        label->clear();
+    };
+    Dataset(const Dataset& other);
+    Dataset& operator=(const Dataset& other);
+    bool loadFromCSV(const char* fileName);
+    void printHead(int nRows = 5, int nCols = 5) const;
+    void printTail(int nRows = 5, int nCols = 5) const;
+    void getShape(int& nRows, int& nCols) const;
+    void columns() const;
+    bool drop(int axis = 0, int index = 0, std::string columns = "");
+    Dataset extract(int startRow = 0, int endRow = -1, int startCol = 0, int endCol = -1) const;
+};
 
 // class kNN {
 // private:

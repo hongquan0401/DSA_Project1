@@ -29,8 +29,15 @@ int main() {
     {
         p2->push_back(i);
     }
-    List<int> *p1 = new ArrList<int>(p2);
-    p1->reverse();
+    List<int> *p1 = new SLinkedList<int>(p2);
+    List<List<int>*> *p = new SLinkedList<List<int>*>();
+    p->push_back(p1);
+    p->push_back(p2);
+    // p->get(0)->print();
+    // cout << '\n';
+    // p->get(1)->print();
+    p->get(0)->clear();
+    p->get(1)->clear();
+    p->clear();
     p1->print();
-    return 0;
 }
