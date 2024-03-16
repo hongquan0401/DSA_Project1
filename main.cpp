@@ -30,7 +30,11 @@ int main() {
         p2->push_back(i);
     }
     List<int> *p1 = new ArrList<int>(p2);
-    p1->reverse();
+    // cout << &(p1->get(0)) << " " << &(p2->get(0));
+    p1->print();
+    cout << '\n';
+    p2->clear();
+    p2->print();
     p1->print();
     return 0;
 }

@@ -23,18 +23,28 @@ public:
     virtual void print() const = 0;
     virtual void reverse() = 0;
     //virtual void traverse(std::function <void (T &)> op) = 0;
-    virtual ArrList<T>* _to_Array() = 0;
-    virtual SLinkedList<T>* _to_SLinkedList() = 0;
+    // virtual ArrList<T>* _to_Array() = 0;
+    // virtual SLinkedList<T>* _to_SLinkedList() = 0;
 };
 
 // class Dataset {
 // private:
 //     List<List<int>*>* data;
+//     List<string>* label;
 //     //You may need to define more
 // public:
-//     Dataset();
-//     ~Dataset();
-//     Dataset(const Dataset& other);
+//     Dataset(): data(new SLinkedList<List<int>*>), label(new SLinkedList<string>) {};
+//     ~Dataset() {
+//         for (int i = 0; i < data->length(); i++){
+//             data->get(i)->clear();
+//         }
+//         data->clear();
+//         label->clear();
+//     };
+//     Dataset(const Dataset& other) {
+//         data = new SLinkedList<List<int>*>(other.data);
+//         label = new SLinkedList<string>(other.label);
+//     };
 //     Dataset& operator=(const Dataset& other);
 //     bool loadFromCSV(const char* fileName);
 //     void printHead(int nRows = 5, int nCols = 5) const;
@@ -131,6 +141,7 @@ class SLinkedList : public List<T> {
         };
         void print() const {
             // traverse([](T & val)->void{cout << val << " ";});
+            if (count == 0) return;
             Node* tmp = head;
             while (tmp->next)
             {
@@ -192,14 +203,12 @@ public:
     ArrList (): count(0), cap(5) { pD = new T[5]; };
     ArrList (int count = 0, int cap = 5) { this->count = count; this->cap = cap; pD = new T[cap];}
     ArrList (List<T> *other) {
-        if (other->length() >= cap)
-        {
-            resize(cap);
-        }
+        count = other->length();
+        cap = count * 1.5;
+        pD = new T[cap];
         for (int i = 0; i < other->length(); i++){
             pD[i] = other->get(i);
         }
-        count = other->length();
     };
     ~ArrList() { clear(); };
     void resize(int n) {
@@ -279,6 +288,7 @@ public:
         }
     };
     void print() const {
+        if (count == 0) return;
         int i = 0;
         for (i; i < count - 1; i++)
         {
