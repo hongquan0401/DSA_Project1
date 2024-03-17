@@ -29,12 +29,12 @@ int main() {
     {
         p2->push_back(i);
     }
-    List<int> *p1 = new ArrList<int>(p2);
+    List<int> *p1 = new SLinkedList<int>(p2);
     // cout << &(p1->get(0)) << " " << &(p2->get(0));
-    p1->print();
+    p1->print(-2,100);
     cout << '\n';
     p2->clear();
-    p2->print();
-    p1->print();
+    p2->print(2,4);
+    p1->print(3,5);
     return 0;
 }
