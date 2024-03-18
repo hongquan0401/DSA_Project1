@@ -54,23 +54,23 @@ public:
     void columns() const { label->print(); };
     bool drop(int axis = 0, int index = 0, std::string columns = "");
     Dataset extract(int startRow = 0, int endRow = -1, int startCol = 0, int endCol = -1) const;
+    List<List<int>*>* getData() const;
     List<string>* getLabel() { return this->label; }
 };
 
-// class kNN {
-// private:
-//     int k;
-//     //You may need to define more
-// public:
-//     kNN(int k = 5);
-//     void fit(const Dataset& X_train, const Dataset& y_train);
-//     Dataset predict(const Dataset& X_test);
-//     double score(const Dataset& y_test, const Dataset& y_pred);
-// };
+class kNN {
+private:
+    int k;
+    //You may need to define more
+public:
+    kNN(int k = 5) : k(k) {};
+    void fit(const Dataset& X_train, const Dataset& y_train) {return;};
+    Dataset predict(const Dataset& X_test){ Dataset y; return y;};
+    double score(const Dataset& y_test, const Dataset& y_pred) {return 0.0;};
+};
 
-// void train_test_split(Dataset& X, Dataset& y, double test_size, 
-//                         Dataset& X_train, Dataset& X_test, Dataset& y_train, Dataset& y_test);
-
+void train_test_split(Dataset& X, Dataset& y, double test_size, 
+                        Dataset& X_train, Dataset& X_test, Dataset& y_train, Dataset& y_test);
 // Please add more or modify as needed
 template<typename T>
 class SLinkedList : public List<T> {

@@ -117,8 +117,8 @@ bool Dataset::drop(int axis, int index, std::string columns){
 };
 Dataset Dataset::extract(int startRow, int endRow, int startCol, int endCol) const {
     Dataset result;
-    if(endRow == -1) endRow = this->data->length(); 
-    if(endCol == -1) endCol = this->data->length();
+    if(endRow == -1) endRow = this->data->length() - 1; 
+    if(endCol == -1) endCol = this->label->length() - 1;
     for (int i = startCol; i <= endCol; i++){
         result.label->push_back(this->label->get(i));
     }
@@ -132,3 +132,21 @@ Dataset Dataset::extract(int startRow, int endRow, int startCol, int endCol) con
     }
     return result;
 };
+
+List<List<int>*>* Dataset::getData() const {
+    return data;
+};
+
+void train_test_split(Dataset& X, Dataset& y, double test_size, 
+                        Dataset& X_train, Dataset& X_test, Dataset& y_train, Dataset& y_test)
+                        {
+                            int nRowX = 0, nRowY = 0;
+                            X.getShape(nRowX,nRowY);
+                            int nTest = ceil(test_size * nRowX);
+                            int nTrain = nRowX - nTest;
+
+                            X_train = X.extract(0, nTrain - 1, 0, -1);
+                            y_train = y.extract(0, nTrain - 1, 0, 0);
+                            X_test = X.extract(nTrain, nRowX - 1, 0, -1);
+                            y_test = y.extract(nTrain,nRowX - 1, 0, 0);
+                        }
