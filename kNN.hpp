@@ -23,44 +23,39 @@ public:
     virtual void print() const = 0;
     virtual void print(int start_idx, int end_idx) const = 0;
     virtual void reverse() = 0;
+    virtual int find(const T& val) = 0;
     //virtual void traverse(std::function <void (T &)> op) = 0;
-    // virtual ArrList<T>* _to_Array() = 0;
-    // virtual SLinkedList<T>* _to_SLinkedList() = 0;
+    virtual ArrList<T>* _to_Array() = 0;
+    virtual SLinkedList<T>* _to_SLinkedList() = 0;
 };
 
-// class Dataset {
-// private:
-//     List<List<int>*>* data; // data->length() = rows
-//     List<string>* label; //label->length() = data->get(i)->length() = cols
-//     //You may need to define more
-// public:
-//     Dataset(): data(new SLinkedList<List<int>*>), label(new SLinkedList<string>) {};
-//     ~Dataset() {
-//         for (int i = 0; i < data->length(); i++){
-//             data->get(i)->clear();
-//         }
-//         data->clear();
-//         label->clear();
-//     };
-//     Dataset(const Dataset& other) {
-//         data = new SLinkedList<List<int>*>();
-//         for (int i = 0; i < other.data->length(); i++){
-//             data->push_back(new SLinkedList<int>(other.data->get(i)));
-//         }
-//         label = new SLinkedList<string>(other.label);
-//     };
-//     Dataset& operator=(const Dataset& other);
-//     bool loadFromCSV(const char* fileName);
-//     void printHead(int nRows = 5, int nCols = 5) const;
-//     void printTail(int nRows = 5, int nCols = 5) const;
-//     void getShape(int& nRows, int& nCols) const {
-//         nRows = data->length();
-//         nCols = label->length();
-//     };
-//     void columns() const { label->print(); };
-//     bool drop(int axis = 0, int index = 0, std::string columns = "");
-//     Dataset extract(int startRow = 0, int endRow = -1, int startCol = 0, int endCol = -1) const;
-// };
+class Dataset {
+private:
+    List<List<int>*>* data; // data->length() = rows
+    List<string>* label; //label->length() = data->get(i)->length() = cols
+    //You may need to define more
+public:
+    Dataset();
+    ~Dataset();
+    Dataset(const Dataset& other);
+        // this->data = new SLinkedList<List<int>*>();
+        // for (int i = 0; i < other.data->length(); i++){
+        //     this->data->push_back(new SLinkedList<int>(other.data->get(i)));
+        // }
+        // this->label = new SLinkedList<string>(other.label);
+    Dataset& operator=(const Dataset& other);
+    bool loadFromCSV(const char* fileName);
+    void printHead(int nRows = 5, int nCols = 5) const;
+    void printTail(int nRows = 5, int nCols = 5) const;
+    void getShape(int& nRows, int& nCols) const {
+        nRows = data->length();
+        nCols = label->length();
+    };
+    void columns() const { label->print(); };
+    bool drop(int axis = 0, int index = 0, std::string columns = "");
+    Dataset extract(int startRow = 0, int endRow = -1, int startCol = 0, int endCol = -1) const;
+    List<string>* getLabel() { return this->label; }
+};
 
 // class kNN {
 // private:
@@ -105,6 +100,16 @@ class SLinkedList : public List<T> {
         void push_front(T value) {
             insert(0,value);
         };
+        int find(const T& val) {
+            Node* tmp = head;
+            int i = 0;
+            while(tmp) {
+                if (tmp->data == val) return i;
+                tmp = tmp->next;
+                i++;
+            }
+            return -1;
+        }
         void insert(int index, T value) {
             if (index < 0) index = 0;
             else if (index > count) index = count;
@@ -161,7 +166,7 @@ class SLinkedList : public List<T> {
             if (count == 0) return;
             if (start_idx > end_idx) return;
             if (start_idx < 0) start_idx = 0;
-            if (end_idx > count) end_idx = count - 1;
+            if (end_idx >= count) end_idx = count - 1;
             int idx = start_idx;
             while (idx < end_idx) {
                 cout << this->get(idx++) << " ";
@@ -182,21 +187,21 @@ class SLinkedList : public List<T> {
         // void traverse(std::function<void (T &)> op){
         //     for (Node* p = head; p; p = p->next) op(p->data);            
         // }
-        // ArrList<T>* _to_Array() {
-        //     ArrList<T>* p = new ArrList<T>(0,count);
-        //     for (int i = 0; i < count; i++){
-        //         p->push_back(this->get(i));
-        //     }
-        //     return p;
-        // };
-        // SLinkedList<T>* _to_SLinkedList() {
-        //     SLinkedList<int>* p = new SLinkedList();
-        //     for (int i = 0; i < count; i++)
-        //     {
-        //         p->push_back(this->get(i));
-        //     }
-        //     return p;
-        // };
+        ArrList<T>* _to_Array() {
+            ArrList<T>* p = new ArrList<T>(0,count);
+            for (int i = 0; i < count; i++){
+                p->push_back(this->get(i));
+            }
+            return p;
+        };
+        SLinkedList<T>* _to_SLinkedList() {
+            SLinkedList<T>* p = new SLinkedList();
+            for (int i = 0; i < count; i++)
+            {
+                p->push_back(this->get(i));
+            }
+            return p;
+        };
     public:
         class Node
         {
@@ -242,6 +247,14 @@ public:
             temp = nullptr;
         }
     };
+    int find (const T& val){
+        for (int i = 0; i < count; i++)
+        {
+            if (pD[i] == val) return i;
+        }
+        return -1;
+
+    }
     void push_back(T value) {
         if (isFull())
         {
@@ -334,19 +347,19 @@ public:
             pR--;
         }
     };
-    // ArrList<T>* _to_Array() {
-    //     ArrList<T>* p = new ArrList<T>(0,cap);
-    //     for (int i = 0; i < count; i++)
-    //     {
-    //         p[i] = pD[i];
-    //     }
-    //     return p;
-    // };
-    // SLinkedList<T>* _to_SLinkedList() {
-    //     SLinkedList<T>* p = new SLinkedList<T>();
-    //     for(int i = 0; i < count; i++) {
-    //         p->push_back(this->get(i));
-    //     }
-    //     return p;
-    // };
+    ArrList<T>* _to_Array() {
+        ArrList<T>* p = new ArrList<T>(0,cap);
+        for (int i = 0; i < count; i++)
+        {
+            p->push_back(pD[i]);
+        }
+        return p;
+    };
+    SLinkedList<T>* _to_SLinkedList() {
+        SLinkedList<T>* p = new SLinkedList<T>();
+        for(int i = 0; i < count; i++) {
+            p->push_back(this->get(i));
+        }
+        return p;
+    };
 };
