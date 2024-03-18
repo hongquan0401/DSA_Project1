@@ -24,17 +24,14 @@
 int main() {
     //tc1();
     
-    List<int> *p2 = new SLinkedList<int>();
-    for (int i = 0; i < 10; i++)
-    {
-        p2->push_back(i);
-    }
-    List<int> *p1 = new SLinkedList<int>(p2);
-    // cout << &(p1->get(0)) << " " << &(p2->get(0));
-    p1->print(-2,100);
+    clock_t begin = clock();
+    Dataset d1;
+    if (d1.loadFromCSV("mnist.csv") == true) cout << "1\n";
+    else cout << "0";
+    d1.printHead();
     cout << '\n';
-    p2->clear();
-    p2->print(2,4);
-    p1->print(3,5);
+    d1.printTail();
+    clock_t end = clock();
+    cout << "\nexcute time: " << end - begin;
     return 0;
 }
