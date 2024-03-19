@@ -102,11 +102,11 @@ void Dataset::printTail(int nRows, int nCols) const
     this->label->print(len - nCols, len - 1);
     cout << '\n';
     nRows = min(nRows, data->length());
-    for (int i = 0; i < nRows; i++)
+    for (int i = data->length() - nRows; i < data->length(); i++)
     {
         nCols = min(nCols, data->get(i)->length());
         int N = data->get(i)->length();
-        if (i == nRows - 1)
+        if (i == data->length() - 1)
             data->get(i)->print(N - nCols, N);
         else
         {

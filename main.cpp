@@ -41,9 +41,8 @@ int main()
     // cout << "Accuracy: " << accuracy << endl;
     // clock_t end = clock();
     // cout << "\nexcute time: " << end - begin;
-int nRows, nCols;
 Dataset dataset;
 dataset.loadFromCSV("mnist.csv");
-bool result = dataset.drop(0, 12);
-cout << "Drop(0, 12) result: " << result << endl;
+dataset.printTail(20, 20);
+// dataset.getData()->get(196)->print();
 }
