@@ -61,12 +61,14 @@ public:
 class kNN {
 private:
     int k;
+    Dataset X_train, y_train;
+    int nRow_train, nCol_train;
     //You may need to define more
 public:
-    kNN(int k = 5) : k(k) {};
-    void fit(const Dataset& X_train, const Dataset& y_train) {return;};
-    Dataset predict(const Dataset& X_test){ Dataset y; return y;};
-    double score(const Dataset& y_test, const Dataset& y_pred) {return 0.0;};
+    kNN(int k = 5);
+    void fit(const Dataset& X_train, const Dataset& y_train);
+    Dataset predict(const Dataset& X_test);
+    double score(const Dataset& y_test, const Dataset& y_pred);
 };
 
 void train_test_split(Dataset& X, Dataset& y, double test_size, 
@@ -136,7 +138,7 @@ class SLinkedList : public List<T> {
             count--;
         };
         T& get(int index) const {
-            if (index < 0 || index >= count) throw "Invalid index";
+            if (index < 0 || index >= count) throw std::out_of_range("Index out of bounds");
             Node* p = head;
             while (index){ p = p->next; index--;};
             return p->data;
@@ -223,8 +225,8 @@ private:
     T* pD;
     int count, cap;
 public:
-    ArrList (): count(0), cap(5) { pD = new T[5]; };
-    ArrList (int count = 0, int cap = 5) { this->count = count; this->cap = cap; pD = new T[cap];}
+    ArrList () { this->count = 0; this->cap = 5; pD = new T[cap]; };
+    ArrList (int count, int cap) { this->count = count; this->cap = cap; pD = new T[cap];}
     ArrList (List<T> *other) {
         count = other->length();
         cap = count * 1.5;
@@ -307,6 +309,7 @@ public:
         count--;
     };
     T& get(int index) const {
+        if (index < 0 || index >= count) throw std::out_of_range("Index out of bounds");
         return pD[index];
     };
     int length() const { return count; } ;
@@ -331,7 +334,7 @@ public:
         if (count == 0) return;
         if (start_idx > end_idx) return;
         if (start_idx < 0) start_idx = 0;
-        if (end_idx > count) end_idx = count - 1;
+        if (end_idx >= count) end_idx = count - 1;
         for (int i = start_idx; i < end_idx; i++)
         {
             cout << pD[i] << " ";
