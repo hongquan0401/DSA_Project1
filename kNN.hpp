@@ -113,7 +113,7 @@ class SLinkedList : public List<T> {
             return -1;
         }
         void insert(int index, T value) {
-            if (index < 0) index = 0;
+            if (index < 0) return;
             else if (index > count) index = count;
             Node** pp = &head;
             while (index)
@@ -138,7 +138,7 @@ class SLinkedList : public List<T> {
             count--;
         };
         T& get(int index) const {
-            if (index < 0 || index >= count) throw std::out_of_range("Index out of bounds");
+            if (index < 0 || index >= count)  throw std::out_of_range("get(): Out of range");
             Node* p = head;
             while (index){ p = p->next; index--;};
             return p->data;
@@ -309,7 +309,7 @@ public:
         count--;
     };
     T& get(int index) const {
-        if (index < 0 || index >= count) throw std::out_of_range("Index out of bounds");
+        if (index < 0 || index >= count)  throw std::out_of_range("get(): Out of range");
         return pD[index];
     };
     int length() const { return count; } ;

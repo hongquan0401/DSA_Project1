@@ -118,12 +118,11 @@ void Dataset::printTail(int nRows, int nCols) const
 
 bool Dataset::drop(int axis, int index, std::string columns)
 {
-    if (axis != 0 || axis != 1)
-        return false;
-    if (index >= data->length() || index < 0)
+    if (axis != 0 && axis != 1)
         return false;
     if (axis == 0)
     {
+        if (index < 0 || index >= data->length()) return false;
         data->get(index)->clear();
         return true;
     }

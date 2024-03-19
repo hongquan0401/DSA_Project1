@@ -24,22 +24,26 @@
 int main()
 {
     // tc1();
-    clock_t begin = clock();
-    Dataset dataset;
-    dataset.loadFromCSV("mnist.csv");
-    int nRows, nCols;
+    // clock_t begin = clock();
+    // Dataset dataset;
+    // dataset.loadFromCSV("mnist.csv");
+    // int nRows, nCols;
 
-    kNN knn;
-    Dataset X_train, X_test, y_train, y_test;
-    Dataset feature = dataset.extract(0, -1, 1, -1);
-    Dataset label = dataset.extract(0, -1, 0, 0);
+    // kNN knn;
+    // Dataset X_train, X_test, y_train, y_test;
+    // Dataset feature = dataset.extract(0, -1, 1, -1);
+    // Dataset label = dataset.extract(0, -1, 0, 0);
 
-    train_test_split(feature, label, 0.2, X_train, X_test, y_train, y_test);
-    knn.fit(X_train, y_train);
-    Dataset y_pred = knn.predict(X_test);
-    double accuracy = knn.score(y_test, y_pred);
-    cout << "Accuracy: " << accuracy << endl;
-    clock_t end = clock();
-    cout << "\nexcute time: " << end - begin;
-    return 0;
+    // train_test_split(feature, label, 0.2, X_train, X_test, y_train, y_test);
+    // knn.fit(X_train, y_train);
+    // Dataset y_pred = knn.predict(X_test);
+    // double accuracy = knn.score(y_test, y_pred);
+    // cout << "Accuracy: " << accuracy << endl;
+    // clock_t end = clock();
+    // cout << "\nexcute time: " << end - begin;
+int nRows, nCols;
+Dataset dataset;
+dataset.loadFromCSV("mnist.csv");
+bool result = dataset.drop(0, 12);
+cout << "Drop(0, 12) result: " << result << endl;
 }
