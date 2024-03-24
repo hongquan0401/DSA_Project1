@@ -230,6 +230,7 @@ public:
     ArrList (List<T> *other) {
         count = other->length();
         cap = count * 1.5;
+        delete[] pD;
         pD = new T[cap];
         for (int i = 0; i < other->length(); i++){
             pD[i] = other->get(i);
